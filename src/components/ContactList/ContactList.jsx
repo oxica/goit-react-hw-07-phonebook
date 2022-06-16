@@ -1,34 +1,61 @@
 import s from './ContactList.module.css';
 import ContactItem from '../ContactItem/ContactItem';
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useGetContactsApiQuery } from 'redux/contactsApi';
+import PropTypes from 'prop-types';
 
 const ContactList = () => {
-  // const items = useSelector(state => state.contacts.items);
-  // const filter = useSelector(state => state.filter);
-
   const { data, isLoading } = useGetContactsApiQuery();
-  // const contacts = getVisibleContacts(items, filter);
-  // console.log(data);
+  const filter = useSelector(state => state.filter.value);
 
-  if (isLoading) return <p>Loading...</p>;
+  const filteredContacts = () => {
+    const normalizeFilter = filter.toLowerCase();
+    return (
+      data &&
+      data.filter(contact =>
+        contact.name.toLowerCase().includes(normalizeFilter)
+      )
+    );
+  };
 
-  // const getVisibleContacts = filter =>
-  //   data.filter(contact =>
-  //     contact.name.toLowerCase().includes(filter.toLowerCase())
-  //   );
+  const filterEl = filteredContacts();
 
   return (
-    <ul className={s.list}>
-      {data ? (
-        data.map(({ id, name, phone }) => (
-          <ContactItem key={id} id={id} name={name} phone={phone} />
-        ))
-      ) : (
-        <p className={s.text}>No contacts</p>
-      )}
-    </ul>
+    <>
+      {isLoading && <p>Loading...</p>}
+      {
+        <ul className={s.list}>
+          {
+            data &&
+              // ? (
+              filterEl.map(({ id, name, phone }) => (
+                <ContactItem
+                  key={id}
+                  data={filterEl}
+                  id={id}
+                  name={name}
+                  phone={phone}
+                />
+              ))
+            // )
+            //   : (
+            //   <p className={s.text}>No contacts</p>
+            // )
+          }
+        </ul>
+      }
+    </>
   );
+};
+
+ContactList.propTypes = {
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      phone: PropTypes.string.isRequired,
+    })
+  ),
 };
 
 export default ContactList;
