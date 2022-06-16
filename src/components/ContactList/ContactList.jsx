@@ -3,17 +3,20 @@ import ContactItem from '../ContactItem/ContactItem';
 // import { useSelector } from 'react-redux';
 import { useGetContactsApiQuery } from 'redux/contactsApi';
 
-// const getVisibleContacts = (items, filter) =>
-//   items.filter(contact =>
-//     contact.name.toLowerCase().includes(filter.toLowerCase())
-//   );
-
 const ContactList = () => {
   // const items = useSelector(state => state.contacts.items);
-  // const filter = useSelector(state => state.contacts.filter);
+  // const filter = useSelector(state => state.filter);
+
+  const { data, isLoading } = useGetContactsApiQuery();
   // const contacts = getVisibleContacts(items, filter);
-  const { data } = useGetContactsApiQuery();
-  console.log(data);
+  // console.log(data);
+
+  if (isLoading) return <p>Loading...</p>;
+
+  // const getVisibleContacts = filter =>
+  //   data.filter(contact =>
+  //     contact.name.toLowerCase().includes(filter.toLowerCase())
+  //   );
 
   return (
     <ul className={s.list}>
