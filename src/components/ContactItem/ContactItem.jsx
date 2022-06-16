@@ -5,6 +5,7 @@ import { useDeleteContactMutation } from 'redux/contactsApi';
 
 const ContactItem = ({ id, name, phone }) => {
   const [deleteContact] = useDeleteContactMutation();
+
   const handleDeleteContact = async id => {
     await deleteContact(id).unwrap();
   };
