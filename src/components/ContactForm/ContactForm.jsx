@@ -5,7 +5,7 @@ import {
   useGetContactsApiQuery,
 } from 'redux/contactsApi';
 
-export default function ContactForm({ onSubmit }) {
+export default function ContactForm() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [addContact] = useAddContactMutation();
